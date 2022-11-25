@@ -1,0 +1,54 @@
+{% extends 'advertise.html' %}
+
+{% load custom_filters %}
+
+{% block title %}
+Объявление
+{% endblock title %}
+
+
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="row">
+            <div class="card-body col-9">
+                <h2 class="card-title my-3">Hi, {{ user.username }}</h2>
+                <p>You are last login on:  {{ user.last_login }}</p>
+                <p class="card-text">Your email: {{ user.profile.email }}</p>
+                <p class="card-text">{{ reply.msg }}</p>
+            </div>
+        </div>
+            <h2 class="card-title my-3">Ваши объявления:</h2>
+            {% for ad in advertise %}
+                <div class="col-lg-8">
+                    <div class="row">
+                        <div class="card mb-6">
+                        <a href="#!"><img class="card-img-top" src="{{ ad.photo.url }}" alt="..." /></a>
+                            <div class="card-body">
+                            <div class="small text-muted">{{ ad.time_pub }}</div>
+                            <h2 class="card-title h4">{{ ad.header }}</h2>
+                            <p class="card-text">{{ ad.content }}</p>
+                                <h3 class="card-title h4">Отклики, к вашему объявлению:</h3>
+                            {% for obj in reply|in_category:ad %}
+                                <p class="card-text">Name: {{ obj.name }}</p>
+                                <p class="card-text">Reply: {{ obj.msg }}</p>
+                                <form method="post" action="{% url 'delete_reply' obj.id %}">{% csrf_token %}
+                                    {{ form }}
+                                    <input class="button111" type="submit" value="Delete">
+                                </form>
+                                <a class="button111" href="'{% url 'delete_reply' obj.id %}'"> Отклик в ответ </a>
+                            {% endfor %}
+    <!--                    <a class="btn btn-primary" href="{% url 'ad_detail' ad.id %}"> Оставить отклик → </a>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="col-lg-4">
+    </div>
+</div>
+{% endblock content %}
