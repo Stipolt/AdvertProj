@@ -6,6 +6,7 @@ from django.core.mail import send_mail
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from requests import Response, request
 
 from .filter import AdFilter
 from .forms import AdForm, ReplyForm
@@ -27,13 +28,15 @@ def email_reply(pk, msg):
     ad = Advertise.objects.get(id=pk)
     email = ad.user.email
     send_mail(
-        'You have a reply to your ad! Check in!\n',
-        f'Hello u get a reply for your ad:'
+        'You have a reply to your ad! Check in!',
+        f'Hello u get a reply for your ad:\n'
         f'{msg}',
         'egorkabox@yandex.ru',
         [email],
         fail_silently=False,
     )
+
+# def apply_reply():
 
 
 class AdvertList(ListView):
@@ -83,4 +86,7 @@ class SendReply(LoginRequiredMixin, View):
 class ReplyDeleteView(LoginRequiredMixin, DeleteView):
     model = Reply
     template_name = 'delete_reply.html'
-    success_url = reverse_lazy('profile')
+
+    def get_success_url(self):
+        return reverse('profile', args=[self.request.user.username])
+
