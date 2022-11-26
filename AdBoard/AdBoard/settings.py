@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.yandex',
 
-    'AdApp.apps.AdappConfig',
+    'AdApp.apps.AdAppConfig',
     'accounts',
     'crispy_forms',
     'django_filters',

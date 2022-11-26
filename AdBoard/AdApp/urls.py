@@ -10,5 +10,5 @@ urlpatterns = [
     path('<int:pk>/edit/', AdvertEdit.as_view(), name='ad_edit'),
     path('reply/<int:pk>', views.SendReply.as_view(), name='send_reply'),
     path('<int:pk>/delete', ReplyDeleteView.as_view(), name='delete_reply'),
-
+    # path('<int:pk>/apply', views.apply_reply, name='apply_reply'),
 ]

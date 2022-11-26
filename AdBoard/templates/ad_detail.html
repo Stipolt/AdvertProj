@@ -12,7 +12,11 @@
         <div class="col-lg-8">
             <div class="row">
                 <div class="card mb-6">
-                    <a href="#!"><img class="card-img-top" src="{{ ad.photo.url }}" alt="..." /></a>
+                    {% if ad.photo %}
+                        <a href="#!"><img class="card-img-top" src="{{ ad.photo.url }}" alt="..." /></a>
+                    {% else %}
+                        <a href="#!"><img class="card-img-top" src="media/topzero-products-Malmo-Matte-Black-TZ-PE458M-image-003.jpg" alt="..." /></a>
+                    {% endif %}
                     <div class="card-body">
                         <div class="small text-muted">{{ ad.time_pub }}</div>
                         <h2 class="card-title">{{ ad.header }}</h2>

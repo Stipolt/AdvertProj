@@ -27,7 +27,11 @@
                 <div class="col-lg-8">
                     <div class="row">
                         <div class="card mb-6">
-                        <a href="#!"><img class="card-img-top" src="{{ ad.photo.url }}" alt="..." /></a>
+                           {% if ad.photo %}
+                                <a href="{% url 'ad_detail' ad.id %}"><img class="card-img-top" src="{{ ad.photo.url }}" alt="..." /></a>
+                                {% else %}
+                                <a href="#!"><img class="card-img-top" src="/media/topzero-products-Malmo-Matte-Black-TZ-PE458M-image-003.jpg" alt="..." /></a>
+                                {% endif %}
                             <div class="card-body">
                             <div class="small text-muted">{{ ad.time_pub }}</div>
                             <h2 class="card-title h4">{{ ad.header }}</h2>
@@ -40,7 +44,7 @@
                                     {{ form }}
                                     <input class="button111" type="submit" value="Delete">
                                 </form>
-                                <a class="button111" href="'{% url 'delete_reply' obj.id %}'"> Отклик в ответ </a>
+                                <a class="button111" href="#"> Accept </a>
                             {% endfor %}
     <!--                    <a class="btn btn-primary" href="{% url 'ad_detail' ad.id %}"> Оставить отклик → </a>-->
                             </div>

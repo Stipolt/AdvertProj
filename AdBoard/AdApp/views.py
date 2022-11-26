@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.dispatch import receiver
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from django.urls import reverse_lazy
@@ -11,17 +11,6 @@ from requests import Response, request
 from .filter import AdFilter
 from .forms import AdForm, ReplyForm
 from .models import *
-
-
-# @receiver
-# def email_reply_to_reply(sender, instance, created, **kwargs):
-#     subject = f'{instance.client_name} {instance.date.strftime("%d %m %Y")}'
-#     mail_managers(
-#         subject=subject,
-#         message=instance.message,
-#     )
-#
-#     post_save.connect(notify_managers_appointment, sender=Appointment)
 
 
 def email_reply(pk, msg):
@@ -36,7 +25,10 @@ def email_reply(pk, msg):
         fail_silently=False,
     )
 
-# def apply_reply():
+
+# def apply_reply(request, user):
+#     email_reply_to_reply(user)
+#     return reverse('profile', args=[request.user.username])
 
 
 class AdvertList(ListView):
@@ -62,6 +54,15 @@ class AdvertCreate(LoginRequiredMixin, CreateView):
     form_class = AdForm
     model = Advertise
     template_name = 'ad_edit.html'
+
+    def get_success_url(self):
+        return reverse('ads')
+
+    def form_valid(self, form):
+        Advertise = form.save(commit=False)
+        Advertise.user = self.request.user
+        Advertise.save()
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class AdvertEdit(LoginRequiredMixin, UpdateView):

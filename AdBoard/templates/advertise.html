@@ -62,7 +62,11 @@
                             <!-- Blog post-->
                             <div class="row">
                             <div class="card mb-4">
-                                <a href="#!"><img class="card-img-top" src="{{ ad.photo.url }}" alt="..." /></a>
+                                {% if ad.photo %}
+                                <a href="{% url 'ad_detail' ad.id %}"><img class="card-img-top" src="{{ ad.photo.url }}" alt="..." /></a>
+                                {% else %}
+                                <a href="#!"><img class="card-img-top" src="media/topzero-products-Malmo-Matte-Black-TZ-PE458M-image-003.jpg" alt="..." /></a>
+                                {% endif %}
                                 <div class="card-body">
                                     <div class="small text-muted">{{ ad.time_pub }}</div>
                                     <h2 class="card-title h4">{{ ad.header }}</h2>

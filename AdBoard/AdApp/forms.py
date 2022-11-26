@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
 from .models import Advertise, Reply
@@ -20,6 +21,7 @@ class AdForm(forms.ModelForm):
             cleaned_data = super().clean()
             content = cleaned_data.get("content")
             header = cleaned_data.get('header')
+
 
             if header == content:
                 raise ValidationError(

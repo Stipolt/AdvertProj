@@ -19,6 +19,7 @@ class Advertise(models.Model):
     file = models.FileField("Video", blank=True)
     photo = models.ImageField("Image", blank=True)
 
+
     def get_absolute_url(self):
         return reverse('ad_detail', args=[str(self.id)])
 
