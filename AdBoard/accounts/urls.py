@@ -8,5 +8,5 @@ urlpatterns = [
     path('register/', register, name="register"),
     path('otp/', otp, name="otp"),
     path('logout/', views.LogoutView.as_view(), name='logout'),
-    path('profile/<username>/', profile, name='profile'),
+    path('profile/<username>/', login_required(profile), name='profile'),
 ]

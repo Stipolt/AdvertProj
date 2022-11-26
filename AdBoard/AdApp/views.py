@@ -23,12 +23,13 @@ from .models import *
 #     post_save.connect(notify_managers_appointment, sender=Appointment)
 
 
-def email_reply(pk):
+def email_reply(pk, msg):
     ad = Advertise.objects.get(id=pk)
     email = ad.user.email
     send_mail(
-        'You have a reply to your ad! Check in!',
-        f'Hello u get a reply for your ad',
+        'You have a reply to your ad! Check in!\n',
+        f'Hello u get a reply for your ad:'
+        f'{msg}',
         'egorkabox@yandex.ru',
         [email],
         fail_silently=False,
@@ -70,15 +71,16 @@ class SendReply(LoginRequiredMixin, View):
     def post(self, request, pk):
         form = ReplyForm(request.POST)
         advertise = Advertise.objects.get(id=pk)
+        msg = request.POST.get('msg')
         if form.is_valid():
             form = form.save(commit=False)
             form.advertise = advertise
             form.save()
-            email_reply(pk)
+            email_reply(pk, msg)
         return redirect(advertise.get_absolute_url())
 
 
 class ReplyDeleteView(LoginRequiredMixin, DeleteView):
     model = Reply
     template_name = 'delete_reply.html'
-    success_url = reverse_lazy('ads')
+    success_url = reverse_lazy('profile')
